@@ -7,17 +7,16 @@ const Promise = require('bluebird');
 const config = require('../../env.js');
 const http = require('https');
 
-//data source controller 
+//data source controller
 module.exports.getDataSet = ()=>{
 	return new Promise((resolve, reject)=>{
-		var req = http.get(config.socrataURL, (res)=>{
+		var req = http.get(`${config.socrataURL}&$limit=5`, (res)=>{
 			res.setEncoding('utf8');
 			debug('socrata_data');
 			debug(res.statusCode);
 			debug(res.headers);
 			res.on('data', (data)=>{
 				resolve(data);
-				console.log('end of request', data);
 			});
 		});
 		req.on('error', (err)=>{

@@ -6,10 +6,12 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const config = require(`${__dirname}/env.js`);
-
+const mongoose = require('mongoose');
 const Socrata = require(`${__dirname}/app/controller/socrata_data.js`);
-require(`${__dirname}/app/routes.js`)(app, morgan, Socrata);
+const PointController = require(`${__dirname}/app/controller/incident_points_ctrl.js`);
+require(`${__dirname}/app/routes.js`)(app, morgan, Socrata, PointController);
 
+mongoose.connect(config.db);
 app.use(bodyParser.json());
 
 

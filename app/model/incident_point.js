@@ -9,11 +9,12 @@ const IncidentPointSchema = mongoose.Schema({
     cad_event_number: {type: Number, required: true},
     event_clearance_group: {type: String, required: true},
     event_clearance_subgroup : {type: String, required: true},
-    event_clearance_description : {type: String}
+    event_clearance_description : {type: String},
     hundred_block_location: {type: String},
     event_clearance_date : {type: Date, default: Date.now},
   },
-  geometry: {
+  loc: {
+    type: {type: String, default: 'Point'},
     coordinates: {type: [Number], index: '2dsphere'}
   }
 });

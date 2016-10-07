@@ -8,16 +8,8 @@ module.exports = function(app, morgan, Socrata, Point){
 		Socrata.getDataSet()
 		.then((data)=>{
 			debug('inside of then');
-			console.log(data);
 			let parsedData = JSON.parse(data);
-			Point.iterateThruData(parsedData);
-			let coords = parsedData.map((obj)=>{
-				return {
-					event_clearance_group: obj.event_clearance_group,
-					incident_location: obj.incident_location
-				}
-			});
-			res.json({data: coords});
+			res.json({data: parsedData});
 		}).catch((err)=>{
 			console.error(err);
 		});

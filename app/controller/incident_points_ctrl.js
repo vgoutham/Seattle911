@@ -18,13 +18,13 @@ function storeIncidentPoints (data){
       type: 'Point',
       coordinates: data.incident_location.coordinates
     }
-  }
+  };
   let Point = new IncidentPoint(option);
   Point.save((err, point)=>{
     debug(point);
-    if(err) return console.error(err);
+    if(err) return debug(err);
   });
-};
+}
 
 //iterater - called in route.js get '/' route
 module.exports.iterateThruData = (dataArr)=>{

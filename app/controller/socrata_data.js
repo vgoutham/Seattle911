@@ -24,8 +24,8 @@ module.exports.getDataSet = ()=>{
 			});
 		});
 		req.on('error', (err)=>{
-			console.error(err);
+			debug(err);
 			reject(err);
 		});
 	});//promise end
-}//end of module.exports
+};//end of module.exports

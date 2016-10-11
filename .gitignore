@@ -2,3 +2,5 @@ node_modules
 app/db
 db
 app/geojson/*.geojson
+config.js
+.DS_Store

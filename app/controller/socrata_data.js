@@ -10,7 +10,7 @@ const http = require('https');
 //data source controller
 module.exports.getDataSet = ()=>{
 	return new Promise((resolve, reject)=>{
-		var req = http.get(`${config.socrataURL}&$limit=50`, (res)=>{
+		var req = http.get(`${config.socrataURL}&$limit=5`, (res)=>{ //using var because node complains..
 			var str = '';
 			res.setEncoding('utf8');
 			debug('socrata_data');

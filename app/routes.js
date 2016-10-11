@@ -1,17 +1,30 @@
 'use strict';
 const debug = require('debug')('seattle911:routes');
+const IncidentPoint = require('./model/incident_point');
+const SortData = require('./controller/sort_data');
 
 module.exports = function(app, morgan, Socrata, Point){
-	//get '/' route will call fn which grabs data from socrata, and store in our db (local db for now)
-	app.get('/', (req, res)=>{
-		debug('app.get /');
+	//get '/fetchdata' grabs data from socrata, and stores in our db (local db for now)
+	app.get('/fetchdata', (req, res)=>{
+		debug('app.get /fetchdata');
 		Socrata.getDataSet()
 		.then((data)=>{
 			debug('inside of then');
 			let parsedData = JSON.parse(data);
-			res.json({data: parsedData});
+			Point.addSuperGroup(parsedData, SortData.superGroups);
+			res.json({msg: 'data received and stored in our db'});
 		}).catch((err)=>{
-			console.error(err);
+			res.json({msg: err});
 		});
 	});
-}//end of module.exports
+
+//get route '/'
+	app.get('/', (req, res)=>{
+		debug('app.get /');
+		IncidentPoint.find({})
+		.then((qData)=>{
+			res.json({data: qData});
+		});
+	});
+
+};//end of module.exports

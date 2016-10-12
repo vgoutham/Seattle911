@@ -5,9 +5,6 @@ const debug = require('debug')('seattle911:incident_points_ctrl');
 //saves data
 function storeIncidentPoints(data){
   let option = {
-    type: 'FeatureCollection',
-    features: [
-      {
         type: 'Feature',
         properties: {
           cad_cdw_id: data.cad_cdw_id,
@@ -23,9 +20,8 @@ function storeIncidentPoints(data){
           type: 'Point',
           coordinates: data.incident_location.coordinates
         }
-      }
-    ]//end of features
-  };//end of option obj
+      };//end of features
+
   let Point = new IncidentPoint(option);
   Point.save((err, point)=>{
     if(err) return debug(err);

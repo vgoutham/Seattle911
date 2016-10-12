@@ -23,7 +23,34 @@ module.exports = function(app, morgan, Socrata, Point){
 		debug('app.get /');
 		IncidentPoint.find({})
 		.then((qData)=>{
-			res.json({data: qData});
+			debug('app.get /\ .then');
+		//	var parsedQData = JSON.parse(qData);
+			var arr = [];
+			qData.map((data)=>{
+				debug('app.get /\ parsedQData.map');
+				const option = {
+							type: 'Feature',
+							properties: {
+								cad_cdw_id: data.properties.cad_cdw_id,
+								cad_event_number: data.properties.cad_event_number,
+								event_super_group: data.properties.event_super_group,
+								event_clearance_group: data.properties.event_clearance_group,
+								event_clearance_subgroup : data.properties.event_clearance_subgroup,
+								event_clearance_description : data.properties.event_clearance_description,
+								hundred_block_location: data.properties.hundred_block_location,
+								event_clearance_date : data.properties.event_clearance_date,
+							},
+							geometry: {
+								type: 'Point',
+								coordinates: data.geometry.coordinates
+							}
+						};//end of features
+				arr.push(option);
+			});
+			res.json({
+				data:
+				{type:'FeatureCollection', features: arr}
+			});
 		});
 	});
 

@@ -4,6 +4,7 @@ const debug = require('debug')('seattle911:incident_points_ctrl');
 
 //saves data
 function storeIncidentPoints(data){
+  // console.log(data);
   let option = {
         type: 'Feature',
         properties: {

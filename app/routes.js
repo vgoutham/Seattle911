@@ -47,10 +47,8 @@ module.exports = function(app, morgan, Socrata, Point){
 						};//end of features
 				arr.push(option);
 			});
-			res.json({
-				data:
-				{type:'FeatureCollection', features: arr}
-			});
+			res.header("Access-Control-Allow-Origin", "*");
+			res.json({type:'FeatureCollection', features: arr});
 		});
 	});
 

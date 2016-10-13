@@ -1,11 +1,11 @@
 'use strict';
 const IncidentPoint = require('../model/incident_point');
 const debug = require('debug')('seattle911:incident_points_ctrl');
-
+  var option;
 //saves data
 function storeIncidentPoints(data){
   // console.log(data);
-  let option = {
+  option = {
         type: 'Feature',
         properties: {
           cad_cdw_id: data.cad_cdw_id,
@@ -22,31 +22,40 @@ function storeIncidentPoints(data){
           coordinates: data.incident_location.coordinates
         }
       };//end of features
-
-  let Point = new IncidentPoint(option);
-  Point.save((err, point)=>{
-    if(err) return debug(err);
-    debug(point);
-  });
+      saveDataInDB(option);
 }//end of storeIncidentPoints fn
 
+function saveDataInDB (opt){
+    let Point = new IncidentPoint(opt);
+    Point.save((err, point)=>{
+      if(err) return debug(err);
+      debug(point);
+    });
+
+}
+
 //iterater - called in route.js get '/' route
-function iterateThruData(dataArr, cb){
+ // module.exports.iterateThruData = function(dataArr, res){
+ function iterateThruData(dataArr, res){
   debug('iterateThruData!!!');
   dataArr.forEach((data)=>{
-    cb(data); //storeIncidentPoints cb
+    storeIncidentPoints(data, res);
   });
 }
 
-module.exports.addSuperGroup = function(arrData, group, cb){
+module.exports.addSuperGroup = function(arrData, group){
   debug('addSuperGroup');
-  cb = iterateThruData;
-  arrData.map((data)=>{
-    for (let category in group) {
-      if(data['event_clearance_group'] === category){
-        data['event_super_group'] = category;
+  let arr = arrData.map((data)=>{
+    var obj = data;
+    debug('arrData.map')
+    // debug(obj);
+    for (var category in group) {
+      if(obj['event_clearance_group'] === category){
+        obj['event_super_group'] = category;
+        storeIncidentPoints(obj)
+        debug(obj);
+        return obj;
       }
-      iterateThruData(arrData, storeIncidentPoints);
     }
   });
 }; //end of addSuperGroup fn

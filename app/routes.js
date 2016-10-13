@@ -14,6 +14,7 @@ module.exports = function(app, morgan, Socrata, Point){
 			Point.addSuperGroup(parsedData, SortData.superGroups);
 			res.json({msg: 'data received and stored in our db'});
 		}).catch((err)=>{
+			console.log('error');
 			res.json({msg: err});
 		});
 	});

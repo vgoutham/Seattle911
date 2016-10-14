@@ -1,6 +1,7 @@
 'use strict';
 const IncidentPoint = require('../model/incident_point');
 const debug = require('debug')('seattle911:incident_points_ctrl');
+
   var option;
 //saves data
 function storeIncidentPoints(data){
@@ -47,12 +48,12 @@ module.exports.addSuperGroup = function(arrData, group){
   debug('addSuperGroup');
   let arr = arrData.map((data)=>{
     var obj = data;
-    debug('arrData.map')
+    debug('arrData.map');
     // debug(obj);
-    for (var category in group) {
+    for (var category in group){
       if(obj['event_clearance_group'] === category){
-        obj['event_super_group'] = category;
-        storeIncidentPoints(obj)
+        obj['event_super_group'] = group[category];
+        storeIncidentPoints(obj);
         debug(obj);
         return obj;
       }

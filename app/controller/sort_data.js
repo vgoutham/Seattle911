@@ -1,7 +1,8 @@
 'use strict';
 const Socrata = require('./socrata_data.js');
 const debug = require('debug')('seattle911:sort_data');
-module.exports.superGroups = {
+const IncidentPointCtr = require('./incident_points_ctrl');
+const superGroups = {
   'TRESPASS': 'PropertyCrimeTheft',
   'SHOPLIFTING': 'PropertyCrimeTheft',
   'DISTURBANCES': 'Miscellaneous',
@@ -69,6 +70,8 @@ function getData (){
   Socrata.getDataSet()
   .then((data)=>{
     let parsedData = JSON.parse(data);
-    //addSuperGroup(parsedData, superGroups);
+    IncidentPointCtr.addSuperGroup(parsedData, superGroups);
   });
 }//end of getData
+
+getData();

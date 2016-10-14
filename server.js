@@ -12,6 +12,7 @@ const PointController = require('./app/controller/incident_points_ctrl.js');
 require('./app/routes.js')(app, morgan, Socrata, PointController);
 
 mongoose.connect(config.db);
+app.use(cors());
 app.use(bodyParser.json());
 
 

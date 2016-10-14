@@ -1,6 +1,7 @@
 'use strict';
 const IncidentPoint = require('../model/incident_point');
 const debug = require('debug')('seattle911:incident_points_ctrl');
+
   var option;
 //saves data
 function storeIncidentPoints(data){

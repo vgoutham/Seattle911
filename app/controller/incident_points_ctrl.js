@@ -44,7 +44,7 @@ module.exports.addSuperGroup = function(arrData, group, cb){
   arrData.map((data)=>{
     for (let category in group) {
       if(data['event_clearance_group'] === category){
-        data['event_super_group'] = category;
+        data['event_super_group'] = group[category];
       }
       iterateThruData(arrData, storeIncidentPoints);
     }

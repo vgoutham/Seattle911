@@ -2,6 +2,9 @@
 const Socrata = require('./socrata_data.js');
 const debug = require('debug')('seattle911:sort_data');
 const IncidentPointCtr = require('./incident_points_ctrl');
+// const mongoose = require('mongoose');
+// const config = require('../../config.js');
+// mongoose.connect(config.MONGODB_URI);
 const superGroups = {
   'TRESPASS': 'PropertyCrimeTheft',
   'SHOPLIFTING': 'PropertyCrimeTheft',

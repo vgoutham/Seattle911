@@ -1,17 +1,17 @@
-'use stirct';
+'use strict';
 
 const debug = require('debug')('seattle911:socrata_data');
 const express = require('express');
 const app = express();
 const Promise = require('bluebird');
-const config = require('../../env.js');
+const config = require('../../config.js');
 const http = require('https');
 
 //data source controller
 module.exports.getDataSet = ()=>{
 	return new Promise((resolve, reject)=>{
-		var req = http.get(`${config.socrataURL}`, (res)=>{ //using var because node complains..
-			var str = '';
+		let req = http.get(`${config.socrataURL}`, (res)=>{ //using var because node complains..
+			let str = '';
 			res.setEncoding('utf8');
 			debug('socrata_data');
 			debug(res.statusCode);

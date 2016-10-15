@@ -55,6 +55,31 @@ class Map extends Component {
             }
         });
 
+        // Create a popup, but don't add it to the map yet.
+        let popup = new mapboxgl.Popup({
+            closeButton: false,
+            closeOnClick: false
+        });
+
+        map.on('mousemove', function(e) {
+            let features = map.queryRenderedFeatures(e.point, { layers: ['incidents'] });
+            // Change the cursor style as a UI indicator.
+            map.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
+
+            if (!features.length) {
+                popup.remove();
+                return;
+            }
+
+            let feature = features[0];
+
+            // Populate the popup and set its coordinates
+            // add description to popup
+            popup.setLngLat(feature.geometry.coordinates)
+                .setHTML(feature.properties.event_clearance_description)
+                .addTo(map);
+        });
+
       });
     }
 

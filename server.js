@@ -5,18 +5,18 @@ const cors = require('cors');
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const config = require('./env.js');
+const config = require('./config.js');
 const mongoose = require('mongoose');
 const Socrata = require('./app/controller/socrata_data.js');
 const PointController = require('./app/controller/incident_points_ctrl.js');
 require('./app/routes.js')(app, morgan, Socrata, PointController);
 
-mongoose.connect(config.db);
+mongoose.connect(config.mLabURI);
 app.use(cors());
 app.use(bodyParser.json());
 
 
 
-const server = app.listen(config.port, ()=>{debug(`Port ${config.port} is listening..`);});
+const server = app.listen(config.port, () => {console.log(`Server is running on port: ${config.port}`);});
 server.isRunning = true;
 module.exports = server;

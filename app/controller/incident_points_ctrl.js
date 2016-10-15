@@ -27,7 +27,10 @@ function storeIncidentPoints(data){
 }//end of storeIncidentPoints fn
 
 function saveDataInDB (opt){
+  
     let Point = new IncidentPoint(opt);
+        debug('saveDataInDB');
+        debug(Point);
     Point.save((err, point)=>{
       if(err) return debug(err);
       debug(point);

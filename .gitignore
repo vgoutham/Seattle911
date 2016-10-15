@@ -5,3 +5,4 @@ app/geojson/*.geojson
 config.js
 .DS_Store
 dist
+env.js

@@ -2,7 +2,7 @@
 const Socrata = require('./socrata_data.js');
 const debug = require('debug')('seattle911:sort_data');
 const IncidentPointCtr = require('./incident_points_ctrl');
-const superGroups = {
+module.exports.superGroups = {
   'TRESPASS': 'PROPERTY',
   'SHOPLIFTING': 'PROPERTY',
   'DISTURBANCES': 'MISC',
@@ -74,4 +74,4 @@ function getData (){
   });
 }//end of getData
 
-getData();
+// getData();

@@ -12,9 +12,9 @@ module.exports.getNewSetOfData = function(){
     let parsedData = JSON.parse(data);
     IncidentPointsCtrl.addSuperGroup(parsedData, superGroup, IncidentPointsCtrl.storeIncidentPoints);
   })
-    .catch((err)=>{
-      console.error('error', err);
-    });
+  .catch((err)=>{
+    console.error('error', err);
+  });
 }; //end of getNewSetOfData
 
 function saveDataToMLab (){

@@ -8,7 +8,7 @@ let newSetOfData = [];
 //re-alllocating each data to a property
 module.exports.storeIncidentPoints = function (arr){
   debug('storeIncidentPoints');
-  debug(arr);
+  // debug(arr);
   let newArr = arr.map((obj)=>{
     option = {
           type: 'Feature',
@@ -49,7 +49,7 @@ function saveDataInDB (arr){
 //adding event_super_group
 module.exports.addSuperGroup = function(arrData, group, cb){
   debug('addSuperGroup');
-  let arr = arrData.map((data, indx, arr)=>{
+  let arr = arrData.map((data)=>{
     var obj = data;
     debug('arrData.map');
     for (var category in group){
@@ -57,7 +57,6 @@ module.exports.addSuperGroup = function(arrData, group, cb){
         obj['event_super_group'] = group[category];
       }
     }
-    debug(obj);
     return obj;
   });
   cb(arr);

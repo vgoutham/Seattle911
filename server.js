@@ -9,18 +9,28 @@ const config = require('./config.js');
 const mongoose = require('mongoose');
 const Socrata = require('./app/controller/socrata_data.js');
 const PointController = require('./app/controller/incident_points_ctrl.js');
-const getDataEveryDay = require('./app/controller/');
+const AllocateData = require('./app/controller/sort_data');
+const Moment = require('moment');
 require('./app/routes.js')(app, morgan, Socrata, PointController);
 
-mongoose.connect(config.mLabURI);
-app.use(cors());
+// mongoose.connect(config.db);
+app.use(cors({
+  'Accept-Encoding': ['gzip']
+}));
 app.use(bodyParser.json());
 
 //every 24 hours updates data
-// TODO: we need to store the current time&date and I guess store that in localstorage so we could offset the url dates instead of doing get to all data each time.
-setInterval(()=>{
-  getDataEveryDay.getNewSetOfData();
-}, 86400000);
+  // TODO: use momentjs to change dates
+Socrata.getDataSet('2016-09-01T00:00:00','2016-09-30T23:59:00')
+.then((data)=>{
+  // debug(data);
+  PointController.addSuperGroup(data, AllocateData.superGroups, PointController.storeIncidentPoints);
+})
+.catch((err)=>{
+  debug(err);
+});
+
+// }, 100000);
 // getDataEveryDay.getNewSetOfData();
 
 

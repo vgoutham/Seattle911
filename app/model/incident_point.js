@@ -1,13 +1,14 @@
 'use strict';
+const debug = require('debug')('seattle911:incident_point');
 const mongoose = require('mongoose');
 const Promise = require('bluebird');
+
 mongoose.Promise = Promise;
 
 const IncidentPointSchema = mongoose.Schema({
+    _id: {type: Number, required: true},
     type: {type: String, default: 'Feature'},
     properties: {
-      cad_cdw_id: {type: Number, required: true},
-      cad_event_number: {type: Number, required: true},
       event_super_group: {type: String, required: true},
       event_clearance_group: {type: String, required: true},
       event_clearance_subgroup : {type: String, required: true},
@@ -21,4 +22,12 @@ const IncidentPointSchema = mongoose.Schema({
     }
   });
 
+
+IncidentPointSchema.pre('save', (next)=>{
+  debug(this._customState);
+  if(this._customState){
+
+  }
+    next();
+});
 module.exports = mongoose.model('IncidentPoint', IncidentPointSchema);

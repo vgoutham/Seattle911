@@ -5,59 +5,47 @@ const debug = require('debug')('seattle911:incident_points_ctrl');
 let option;
 let newSetOfData = [];
 
-//re-alllocating each data to a property
+//upsertingng data
 module.exports.storeIncidentPoints = function (arr){
   debug('storeIncidentPoints');
-  // debug(arr);
-  let newArr = arr.map((obj)=>{
-    option = {
-          type: 'Feature',
-          properties: {
-            cad_cdw_id: obj.cad_cdw_id,
-            cad_event_number: obj.cad_event_number,
-            event_super_group: obj.event_super_group,
-            event_clearance_group: obj.event_clearance_group,
-            event_clearance_subgroup : obj.event_clearance_subgroup,
-            event_clearance_description : obj.event_clearance_description,
-            hundred_block_location: obj.hundred_block_location,
-            event_clearance_date : obj.event_clearance_date,
-          },
-          geometry: {
-            type: 'Point',
-            coordinates: obj.incident_location.coordinates
-          }
-        };//end of features
-        return option;
+  arr.forEach((data)=>{
+    let Point = new IncidentPoint(data);
+    debug('about to be saved in db, but has pre hook in ./model.incident_point.js');
+    debug(Point);
+    Point.save();
   });
-    debug('asisgned to new schema');
-    saveDataInDB(newArr);
 }//end of storeIncidentPoints fn
 
-//saving data in db
-function saveDataInDB (arr){
-  arr.forEach((obj)=>{
-    let Point = new IncidentPoint(obj);
-    Point.save((res)=>{
-      debug(res);
-    })
-    .catch((err)=>{
-      console.error('error', err);
-    });
-  });
-}
 
 //adding event_super_group
-module.exports.addSuperGroup = function(arrData, group, cb){
+module.exports.addSuperGroup = function(dataObj, group, cb){
   debug('addSuperGroup');
-  let arr = arrData.map((data)=>{
-    var obj = data;
-    debug('arrData.map');
-    for (var category in group){
-      if(obj['event_clearance_group'] === category){
-        obj['event_super_group'] = group[category];
+    let obj = JSON.parse(dataObj);
+    let newObj = obj['features'].map((obj)=>{
+      let temp = obj;
+      temp['_id'] = temp['properties']['cad_event_number']
+      delete temp['properties']['cad_cdw_id'];
+      delete temp['properties']['zone_beat'];
+      delete temp['properties']['event_clearance_code'];
+      delete temp['properties']['initial_type_subgroup'];
+      delete temp['properties']['initial_type_group'];
+      delete temp['properties']['census_tract'];
+      delete temp['properties']['general_offense_number'];
+      delete temp['properties']['initial_type_group'];
+      delete temp['properties']['incident_location_zip'];
+      delete temp['properties']['district_sector'];
+      delete temp['properties']['incident_location_city'];
+      delete temp['properties']['at_scene_time'];
+      delete temp['properties']['latitude'];
+      delete temp['properties']['longitude'];
+
+      for (var category in group){
+        if(temp['properties']['event_clearance_group'] === category){
+          temp['properties']['event_super_group'] = group[category];
+        }
       }
-    }
-    return obj;
-  });
-  cb(arr);
+      return temp;
+    });
+  // debug(newObj);
+  cb(newObj);
 }; //end of addSuperGroup fn

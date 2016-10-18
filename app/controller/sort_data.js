@@ -1,8 +1,8 @@
 'use strict';
-const Socrata = require('./socrata_data.js');
 const debug = require('debug')('seattle911:sort_data');
 const IncidentPointCtr = require('./incident_points_ctrl');
-module.exports.superGroups = {
+
+module.exports = {
   'TRESPASS': 'PROPERTY',
   'SHOPLIFTING': 'PROPERTY',
   'DISTURBANCES': 'MISC',
@@ -46,32 +46,22 @@ module.exports.superGroups = {
   'VICE CALLS': 'VICE'
 };
 
-function sortCountData (){
-  debug('sortData');
-  Socrata.getDataSet()
-  .then((dataArr)=>{
-    let cityCrime = {};
-    let parseddataArr = JSON.parse(dataArr);
-      parseddataArr.map((data)=>{
-        debug('hitting parseddataArr.map');
-        if(!cityCrime[data.event_clearance_group]){
-          cityCrime[data.event_clearance_group]['count'] = cityCrime[data.event_clearance_group] || 0;
-          cityCrime[data.event_clearance_group] ++;
-        } else {
-          cityCrime[data.event_clearance_group] ++;
-        }
-      });
-  }).catch((err)=>{
-    console.error(err);
-  });
-}
-
-function getData (){
-  Socrata.getDataSet()
-  .then((data)=>{
-    let parsedData = JSON.parse(data);
-    IncidentPointCtr.addSuperGroup(parsedData, superGroups);
-  });
-}//end of getData
-
-// getData();
+// function sortCountData (){
+//   debug('sortData');
+//   Socrata.getDataSet()
+//   .then((dataArr)=>{
+//     let cityCrime = {};
+//     let parseddataArr = JSON.parse(dataArr);
+//       parseddataArr.map((data)=>{
+//         debug('hitting parseddataArr.map');
+//         if(!cityCrime[data.event_clearance_group]){
+//           cityCrime[data.event_clearance_group]['count'] = cityCrime[data.event_clearance_group] || 0;
+//           cityCrime[data.event_clearance_group] ++;
+//         } else {
+//           cityCrime[data.event_clearance_group] ++;
+//         }
+//       });
+//   }).catch((err)=>{
+//     console.error(err);
+//   });
+// }

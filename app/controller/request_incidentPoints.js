@@ -12,6 +12,6 @@ module.exports = (startDate, endDate) => {
 	return request(dataQueryURL).then((res) => {
 		debug('socrata_data');
 		debug(res.statusCode);
-		return res.body;
+		return JSON.parse(res.body);
 	});
 };

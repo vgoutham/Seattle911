@@ -23,16 +23,17 @@ setInterval(() => {
     const startDate = moment().subtract(1, 'days').format().slice(0, -6); //24 hours prior to current datetime
     const endDate = moment().format().slice(0, -6); //current datetime
 
-    //Get last 24 hrs of incidents points from Socrata API, then add _id and super groups to incidents
+    //Get last 24 hrs of incidents points from Socrata API
     getIncidentPoints(startDate, endDate).then((response) => {
+      //then add _id and super groups to each incident
       let incidents = _.map(response.features, function(incident) {
-        return _.extend({}, incident,
+        return _.merge(incident,
           { _id: incident.properties.cad_event_number,
-            event_super_group: superGroups[incident.properties.event_clearance_group]
+            properties: {event_super_group: superGroups[incident.properties.event_clearance_group]}
           }
         );
       });
-      //Bulk update database with new incidents points
+      //Bulk update database with new incidents
       let bulk = IncidentPoint.collection.initializeUnorderedBulkOp();
       incidents.forEach(incident => {
         bulk.find({_id: incident._id}).upsert().updateOne(incident);

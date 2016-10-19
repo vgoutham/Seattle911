@@ -11,7 +11,8 @@
     "prebuild": "npm-run-all clean-dist build:html",
     "build": "babel-node tools/build.js",
     "postbuild": "babel-node tools/distServer.js",
-    "test": "mocha --timeout 10000"
+    "test": "mocha --timeout 10000",
+    "config-db": "node config.db.js"
   },
   "keywords": [
     "Seattle",

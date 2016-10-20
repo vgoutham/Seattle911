@@ -4,7 +4,7 @@
   "description": "Map and data of Seattle 911 incidents",
   "main": "server.js",
   "scripts": {
-    "start": "babel-node tools/devServer.js & node server.js",
+    "start": "babel-node tools/devServer.js & node server.js & mongod --dbpath=./db",
     "clean-dist": "npm run remove-dist && mkdir dist",
     "remove-dist": "node_modules/.bin/rimraf ./dist",
     "build:html": "babel-node tools/buildHtml.js",

@@ -3,8 +3,7 @@ const debug = require('debug')('seattle911:routes');
 const IncidentPoint = require('./model/incident_point');
 const SortData = require('./controller/sort_data');
 
-module.exports = function(app, morgan, Socrata, Point){
-
+module.exports = function(app){
 //get route '/'
 	app.get('/', (req, res)=>{
 		debug('app.get /');

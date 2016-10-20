@@ -16,6 +16,7 @@ module.exports.storeIncidentPoints = function (arr){
   });
 }//end of storeIncidentPoints fn
 
+// TODO:don't have to delete any  
 
 //adding event_super_group
 module.exports.addSuperGroup = function(dataObj, group, cb){

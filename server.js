@@ -8,12 +8,11 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const moment = require('moment');
 const _ = require('lodash');
-
 const config = require('./config');
 const IncidentPoint = require('./app/model/incident_point');
 const superGroups = require('./app/controller/sort_data');
 const getIncidentPoints = require('./app/controller/request_incidentPoints');
-
+require('./app/routes.js')(app);
 mongoose.connect(config.db);
 
 //Update database with new data every hour

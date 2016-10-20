@@ -2,10 +2,32 @@
 
 .header {
   font-family: 'Ubuntu', sans-serif;
-  margin: 0;
+  color: white;
+  margin: 10px;
+  border-radius: 5px;
+  border: solid rgba(8, 29, 57, 0.8) 2px;
   padding: 10px;
-  height: 50px;
+  height: 40px;
   position: fixed;
   z-index: 10;
-  font-size: 2.5em;
+  font-size: 2em;
+  background: repeating-linear-gradient(
+    30deg,
+    rgba(15, 35, 63, 0.8),
+    rgba(15, 35, 63, 0.8) 2px,
+    rgba(55, 67, 93, 0.8) 2px,
+    rgba(55, 67, 93, 0.8) 4px
+  );
+}
+
+.header:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  border: 2px solid rgba(106, 189, 50, 0.9);
+  border-radius: 3px;
 }

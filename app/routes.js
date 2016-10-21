@@ -1,40 +1,17 @@
 'use strict';
 const debug = require('debug')('seattle911:routes');
 const IncidentPoint = require('./model/incident_point');
-const SortData = require('./controller/sort_data');
+const SortData = require('./controller/reformat_data');
 
 module.exports = function(app){
 //get route '/'
 	app.get('/', (req, res)=>{
 		debug('app.get /');
-		IncidentPoint.find({})
+		IncidentPoint.find({},{'_id': 0, 'properties.latitude': 0, 'properties.zone_beat': 0, 'properties.event_clearance_code': 0, 'properties.incident_location_address': 0, 'properties.longitude': 0, 'properties.incident_location_state': 0, 'properties.district_sector': 0, 'properties.incident_location_city': 0, 'properties.at_scene_time': 0})
 		.then((qData)=>{
 			debug('app.get /\ .then');
-		//	var parsedQData = JSON.parse(qData);
-			var arr = [];
-			qData.map((data)=>{
-				debug('app.get /\ parsedQData.map');
-				const option = {
-							type: 'Feature',
-							properties: {
-								cad_cdw_id: data.properties.cad_cdw_id,
-								cad_event_number: data.properties.cad_event_number,
-								event_super_group: data.properties.event_super_group,
-								event_clearance_group: data.properties.event_clearance_group,
-								event_clearance_subgroup : data.properties.event_clearance_subgroup,
-								event_clearance_description : data.properties.event_clearance_description,
-								hundred_block_location: data.properties.hundred_block_location,
-								event_clearance_date : data.properties.event_clearance_date,
-							},
-							geometry: {
-								type: 'Point',
-								coordinates: data.geometry.coordinates
-							}
-						};//end of features
-				arr.push(option);
-			});
 			res.header("Access-Control-Allow-Origin", "*");
-			res.json({type:'FeatureCollection', features: arr});
+			res.json({"type": "FeatureCollection", "features": qData});
 		});
 	});
 

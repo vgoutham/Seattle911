@@ -10,7 +10,7 @@ const moment = require('moment');
 const _ = require('lodash');
 const config = require('./config');
 const IncidentPoint = require('./app/model/incident_point');
-const superGroups = require('./app/controller/sort_data');
+const superGroups = require('./app/controller/reformat_data');
 const getIncidentPoints = require('./app/controller/request_incidentPoints');
 require('./app/routes.js')(app);
 mongoose.connect(config.db);
@@ -25,13 +25,8 @@ setInterval(() => {
     //Get last 24 hrs of incidents points from Socrata API
     getIncidentPoints(startDate, endDate).then((response) => {
       //then add _id and super groups to each incident
-      let incidents = _.map(response.features, function(incident) {
-        return _.merge(incident,
-          { _id: incident.properties.cad_event_number,
-            properties: {event_super_group: superGroups[incident.properties.event_clearance_group]}
-          }
-        );
-      });
+      IncidentPoint.addSuperGroup(response);
+    });
       //Bulk update database with new incidents
       let bulk = IncidentPoint.collection.initializeUnorderedBulkOp();
       incidents.forEach(incident => {
@@ -41,7 +36,7 @@ setInterval(() => {
         if(err) throw err;
         console.log(`Database succesfully updated with ${res.nUpserted} new incidents!`);
       });
-    });
+    // });
   },
   updateInterval
 );

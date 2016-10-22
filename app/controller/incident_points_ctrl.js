@@ -6,7 +6,7 @@ let option;
 let newSetOfData = [];
 
 //upsertingng data
-module.exports.storeIncidentPoints = function (arr){
+module.exports.storeIncidentPoints = (arr)=>{
   debug('storeIncidentPoints');
   arr.forEach((data)=>{
     let Point = new IncidentPoint(data);
@@ -16,37 +16,15 @@ module.exports.storeIncidentPoints = function (arr){
   });
 }//end of storeIncidentPoints fn
 
-// TODO:don't have to delete any  
 
 //adding event_super_group
-module.exports.addSuperGroup = function(dataObj, group, cb){
+module.exports.addSuperGroup = (res)=>{
   debug('addSuperGroup');
     let obj = JSON.parse(dataObj);
-    let newObj = obj['features'].map((obj)=>{
-      let temp = obj;
-      temp['_id'] = temp['properties']['cad_event_number']
-      delete temp['properties']['cad_cdw_id'];
-      delete temp['properties']['zone_beat'];
-      delete temp['properties']['event_clearance_code'];
-      delete temp['properties']['initial_type_subgroup'];
-      delete temp['properties']['initial_type_group'];
-      delete temp['properties']['census_tract'];
-      delete temp['properties']['general_offense_number'];
-      delete temp['properties']['initial_type_group'];
-      delete temp['properties']['incident_location_zip'];
-      delete temp['properties']['district_sector'];
-      delete temp['properties']['incident_location_city'];
-      delete temp['properties']['at_scene_time'];
-      delete temp['properties']['latitude'];
-      delete temp['properties']['longitude'];
-
-      for (var category in group){
-        if(temp['properties']['event_clearance_group'] === category){
-          temp['properties']['event_super_group'] = group[category];
-        }
-      }
-      return temp;
-    });
-  // debug(newObj);
-  cb(newObj);
+    let incidents = _.map(res.features, function(incident) {
+      return _.merge(incident,
+        { _id: incident.properties.cad_event_number,
+          properties: {event_super_group: superGroups[incident.properties.event_clearance_group]}
+        })
+      });
 }; //end of addSuperGroup fn

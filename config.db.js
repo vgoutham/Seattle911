@@ -6,7 +6,7 @@ const _ = require('lodash');
 
 const config = require('./config');
 const IncidentPoint = require('./app/model/incident_point');
-const superGroups = require('./app/controller/sort_data');
+const superGroups = require('./app/controller/reformat_data');
 const getIncidentPoints = require('./app/controller/request_incidentPoints');
 
 mongoose.connect(config.db);

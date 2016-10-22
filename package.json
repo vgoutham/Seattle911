@@ -4,7 +4,7 @@
   "description": "Map and data of Seattle 911 incidents",
   "main": "server.js",
   "scripts": {
-    "start": "babel-node tools/devServer.js & node server.js & mongod --dbpath=./db",
+    "start": "babel-node tools/devServer.js & DEBUG=seattle911* node server.js & mongod --dbpath=./db",
     "clean-dist": "npm run remove-dist && mkdir dist",
     "remove-dist": "node_modules/.bin/rimraf ./dist",
     "build:html": "babel-node tools/buildHtml.js",
@@ -12,7 +12,7 @@
     "build": "babel-node tools/build.js",
     "postbuild": "babel-node tools/distServer.js",
     "test": "mocha --timeout 10000",
-    "config-db": "node config.db.js"
+    "config-db": "node config.db.js & mongod --dbpath=./db"
   },
   "keywords": [
     "Seattle",

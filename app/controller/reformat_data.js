@@ -1,5 +1,5 @@
 'use strict';
-const debug = require('debug')('seattle911:sort_data');
+const debug = require('debug')('seattle911:reformat_data');
 const IncidentPointCtr = require('./incident_points_ctrl');
 
 module.exports = {
@@ -45,23 +45,3 @@ module.exports = {
   'FALSE ALACAD': 'MISC',
   'VICE CALLS': 'VICE'
 };
-
-// function sortCountData (){
-//   debug('sortData');
-//   Socrata.getDataSet()
-//   .then((dataArr)=>{
-//     let cityCrime = {};
-//     let parseddataArr = JSON.parse(dataArr);
-//       parseddataArr.map((data)=>{
-//         debug('hitting parseddataArr.map');
-//         if(!cityCrime[data.event_clearance_group]){
-//           cityCrime[data.event_clearance_group]['count'] = cityCrime[data.event_clearance_group] || 0;
-//           cityCrime[data.event_clearance_group] ++;
-//         } else {
-//           cityCrime[data.event_clearance_group] ++;
-//         }
-//       });
-//   }).catch((err)=>{
-//     console.error(err);
-//   });
-// }

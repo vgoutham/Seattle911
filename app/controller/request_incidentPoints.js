@@ -13,11 +13,10 @@ module.exports.getSocrataData = (startDate, endDate, cb) => {
 	request.get(`${baseUrl}resource/pu5n-trf4.geojson?$where=event_clearance_date%20between%20"${startDate}"%20and%20"${endDate}"`, (err, res)=>{
 		debug('socrata_data');
 		cb(JSON.parse(res.body));
-		return JSON.parse(res.body);
 	});
-		// return request(`${baseUrl}/resource/pu5n-trf4.geojson?$where=event_clearance_date%20between%20"${startDate}"%20and%20"${endDate}"`).then((res)=>{
-		// 	debug('socrata_data');
-		// 	debug(res.statusCode);
-		// 	return JSON.parse(res.body);
-		// });
 };
+// return request(`${baseUrl}/resource/pu5n-trf4.geojson?$where=event_clearance_date%20between%20"${startDate}"%20and%20"${endDate}"`).then((res)=>{
+// 	debug('socrata_data');
+// 	debug(res.statusCode);
+// 	return JSON.parse(res.body);
+// });

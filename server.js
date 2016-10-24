@@ -19,7 +19,7 @@ mongoose.connect(config.db);
 //Update database with new data every hour
 //Get incidents from Socrata API -> map event_clearance_group to super group -> update to database
 const updateInterval = 1000 * 60 * 60;  //1 hour in milliseconds
-// setInterval(() => {
+setInterval(() => {
     const startDate = moment().subtract(1, 'days').format().slice(0, -6); //24 hours prior to current datetime
     const endDate = moment().format().slice(0, -6); //current datetime
     let superGroupedData;
@@ -38,9 +38,9 @@ const updateInterval = 1000 * 60 * 60;  //1 hour in milliseconds
         console.log(`Database succesfully updated with ${res.nUpserted} new incidents!`);
       });
     });
-//   },
-//   updateInterval
-// );
+  },
+  updateInterval
+);
 
 app.use(morgan('combined')); //'combined' outputs the Apache style LOGs
 app.use(cors({'Accept-Encoding': ['gzip']}));

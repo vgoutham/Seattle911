@@ -24,7 +24,7 @@ setInterval(() => {
     const endDate = moment().format().slice(0, -6); //current datetime
     let superGroupedData;
     //Get last 24 hrs of incidents points from Socrata API
-    getIncidentPoints(startDate, endDate).then((response) => {
+    getIncidentPoints(startDate, endDate, (response) => {
       //then add _id and super groups to each incident
       superGroupedData = IncidentPointCtr.addSuperGroup(response);
 

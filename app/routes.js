@@ -1,7 +1,6 @@
 'use strict';
 const debug = require('debug')('seattle911:routes');
 const IncidentPoint = require('./model/incident_point');
-const SortData = require('./controller/reformat_data');
 
 module.exports = function(app){
 //get route '/'

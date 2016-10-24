@@ -1,9 +1,9 @@
 'use strict';
 const IncidentPoint = require('../model/incident_point');
 const debug = require('debug')('seattle911:incident_points_ctrl');
+const _= require('lodash');
+const supergroupProp = require('./reformat_data.js');
 
-let option;
-let newSetOfData = [];
 
 //upsertingng data
 module.exports.storeIncidentPoints = (arr)=>{
@@ -14,17 +14,17 @@ module.exports.storeIncidentPoints = (arr)=>{
     debug(Point);
     Point.save();
   });
-}//end of storeIncidentPoints fn
+};//end of storeIncidentPoints fn
 
 
 //adding event_super_group
 module.exports.addSuperGroup = (res)=>{
   debug('addSuperGroup');
-    let obj = JSON.parse(dataObj);
     let incidents = _.map(res.features, function(incident) {
       return _.merge(incident,
         { _id: incident.properties.cad_event_number,
-          properties: {event_super_group: superGroups[incident.properties.event_clearance_group]}
-        })
+          properties: {event_super_group: supergroupProp[incident.properties.event_clearance_group]}
+        });
       });
+      return incidents;
 }; //end of addSuperGroup fn

@@ -18,15 +18,15 @@ mongoose.connect(config.db);
 
 //Update database with new data every hour
 //Get incidents from Socrata API -> map event_clearance_group to super group -> update to database
-const updateInterval = 1000 * 60 * 60;  //1 hour in milliseconds
+const updateInterval = 1000 * 60 * 1;  //1 hour in milliseconds
 setInterval(() => {
     const startDate = moment().subtract(1, 'days').format().slice(0, -6); //24 hours prior to current datetime
     const endDate = moment().format().slice(0, -6); //current datetime
     let superGroupedData;
     //Get last 24 hrs of incidents points from Socrata API
-    getIncidentPoints(startDate, endDate, (response) => {
+    getIncidentPoints(startDate, endDate).then((response) => {
       //then add _id and super groups to each incident
-      superGroupedData = IncidentPointCtr.addSuperGroup(response);
+      superGroupedData = IncidentPointCtr.addSuperGroup(response.data);
 
       //Bulk update database with new incidents
       let bulk = IncidentPoint.collection.initializeUnorderedBulkOp();

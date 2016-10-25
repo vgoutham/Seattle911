@@ -1,5 +1,4 @@
 'use strict';
-
 const debug = require('debug')('seattle911:socrata_data');
 const Promise = require('bluebird');
 const config = require('../../config.js');
@@ -23,9 +22,3 @@ module.exports.getSocrataData = (startDate, endDate) => {
 		});
 	});
 };
-
-// return request(`${baseUrl}/resource/pu5n-trf4.geojson?$where=event_clearance_date%20between%20"${startDate}"%20and%20"${endDate}"`).then((res)=>{
-// 	debug('socrata_data');
-// 	debug(res.statusCode);
-// 	return JSON.parse(res.body);
-// });

@@ -3,7 +3,6 @@ const expect = require('chai').expect;
 const nock = require('nock');
 const Promise = require('bluebird');
 const getSocrataData = require('../app/controller/request_incidentPoints').getSocrataData;
-Promise.promisify(getSocrataData);
 const debug = require('debug')('seattle911:index.spec');
 const request = require('request');
 

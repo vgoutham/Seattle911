@@ -1,7 +1,7 @@
 'use strict';
 const debug = require('debug')('seattle911:routes');
 const IncidentPoint = require('./model/incident_point');
-
+const PointsDataCtrl = require('./controller/request_incidentPoints');
 module.exports = function(app){
 //get route '/'
 	app.get('/', (req, res)=>{
@@ -14,4 +14,16 @@ module.exports = function(app){
 		});
 	});
 
+	app.get('/search?', (req, res)=>{
+		debug('search query area=west_seattle');
+		let queryUrl = req.query.area;
+		PointsDataCtrl.getAreaGeo(queryUrl)
+		.then((areaGeo)=>{
+			PointsDataCtrl.getPointsWithinArea(areaGeo)
+			.then((points)=>{
+				res.json({"type": "FeatureCollection", "features": points });
+			});
+		});
+
+	});
 };//end of module.exports

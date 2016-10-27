@@ -1,9 +1,12 @@
 'use strict';
-const debug = require('debug')('seattle911:socrata_data');
+const debug = require('debug')('seattle911:request_incidentPoints');
 const Promise = require('bluebird');
 const config = require('../../config.js');
 const request = Promise.promisify(require('request').get);
-
+const IncidentPoint = require('../model/incident_point');
+const NeighbourhoodGeo = require('../model/neighbourhood');
+const mongoose = require('mongoose');
+mongoose.Promise = Promise;
 // const request = require('request');
 
 const baseUrl = 'https://data.seattle.gov/';
@@ -19,6 +22,26 @@ module.exports.getSocrataData = (startDate, endDate) => {
 		.catch((err)=>{
 			debug(err);
 			reject(err);
+		});
+	});
+};
+
+module.exports.getAreaGeo = (areaName) => {
+	debug('getAreaGeo');
+	return new Promise ((resolve, reject)=> {
+		NeighbourhoodGeo.findOne({properties: {area: areaName}})
+		.then((areaGeoCords)=>{
+			resolve(areaGeoCords);
+		});
+	});
+};
+
+module.exports.getPointsWithinArea = (areaGeo) => {
+	debug('getPointsWithinArea');
+	return new Promise ((resolve, reject)=>{
+		IncidentPoint.find({geometry: { $geoWithin: { $geometry: { type: 'MultiPolygon' , coordinates: areaGeo.coordinates }}}})
+		.then((points)=>{
+			resolve(points);
 		});
 	});
 };

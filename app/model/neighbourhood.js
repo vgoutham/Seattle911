@@ -13,7 +13,7 @@ let NeighbourhoodSchema = mongoose.Schema({
     area: {type: String, required: true}
   },
   geometry: {
-    type: String,
+    type: {type: String, default: 'MultiPolygon'},
     enum: [
       'MultiPoint',
       'LineString',
@@ -24,27 +24,32 @@ let NeighbourhoodSchema = mongoose.Schema({
     coordinates: {type: Array}
 });
 
-let Neighbourhood = mongoose.model('Neighbourhood', NeighbourhoodSchema) ;
+//*************
+//comment this module.exports line out and uncomment let Neighbourhood and on to get area geoJSON in your local db
+//*************
+module.exports = mongoose.model('Neighbourhood', NeighbourhoodSchema) ;
 
-readdir('geojson').then((files)=>{
-  files.forEach((file)=>{
-    readfile(`./geojson/${file}`).then((geoObj)=>{
-      let str = file.slice(0, -8);
-      neighbourhoodGeo(geoObj).then((geo)=>{
-        let addAreaName = _.merge(JSON.parse(geo), {properties: {area: str }});
-        let NeighbourhoodArea = new Neighbourhood(addAreaName);
-        NeighbourhoodArea.save();
-      });
-    });
-  });//end of forEach
-})
-.catch((err)=>{
-  debug(err);
-  console.error(err);
-});//end of readdir
+// let Neighbourhood = mongoose.model('Neighbourhood', NeighbourhoodSchema);
 
-let neighbourhoodGeo = module.exports = (geoObj)=>{
-  return new Promise((resolve, reject)=>{
-    resolve(geoObj.toString());
-  });
-};
+// readdir('geojson').then((files)=>{
+//   files.forEach((file)=>{
+//     readfile(`./geojson/${file}`).then((geoObj)=>{
+//       let str = file.slice(0, -8);
+//       neighbourhoodGeo(geoObj).then((geo)=>{
+//         let addAreaName = _.merge(JSON.parse(geo), {properties: {area: str }});
+//         let NeighbourhoodArea = new Neighbourhood(addAreaName);
+//         NeighbourhoodArea.save();
+//       });
+//     });
+//   });//end of forEach
+// })
+// .catch((err)=>{
+//   debug(err);
+//   console.error(err);
+// });//end of readdir
+//
+// let neighbourhoodGeo = module.exports = (geoObj)=>{
+//   return new Promise((resolve, reject)=>{
+//     resolve(geoObj.toString());
+//   });
+// };

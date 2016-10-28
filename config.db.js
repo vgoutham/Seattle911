@@ -53,8 +53,8 @@ readdir('geojson').then((files)=>{
   console.error(err);
 });//end of readdir
 
-let neighbourhoodGeo = module.exports = (geoObj)=>{
+function neighbourhoodGeo (geoObj) {
   return new Promise((resolve, reject)=>{
     resolve(geoObj.toString());
   });
-};
+}

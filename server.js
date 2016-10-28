@@ -10,15 +10,16 @@ const moment = require('moment');
 const _ = require('lodash');
 const config = require('./config');
 const IncidentPoint = require('./app/model/incident_point');
-
+const supergroupProp = require('./app/controller/reformat_data.js');
 const getIncidentPoints = require('./app/controller/request_incidentPoints').getSocrataData;
 const IncidentPointCtr = require('./app/controller/incident_points_ctrl');
 require('./app/routes.js')(app);
+
 mongoose.connect(config.db);
 
 //Update database with new data every hour
 //Get incidents from Socrata API -> map event_clearance_group to super group -> update to database
-const updateInterval = 1000 * 60 * 60;  //1 hour in milliseconds
+const updateInterval = 1000 * 60 * 1;  //1 hour in milliseconds
 setInterval(() => {
   const startDate = moment().subtract(1, 'days').format().slice(0, -6); //24 hours prior to current datetime
   const endDate = moment().format().slice(0, -6); //current datetime
@@ -26,7 +27,7 @@ setInterval(() => {
   //Get last 24 hrs of incidents points from Socrata API
   getIncidentPoints(startDate, endDate).then((response) => {
     //then add _id and super groups to each incident
-    superGroupedData = IncidentPointCtr.addSuperGroup(response.data);
+    superGroupedData = IncidentPointCtr.addSuperGroup(response.data, supergroupProp);
 
   //Bulk update database with new incidents
     let bulk = IncidentPoint.collection.initializeUnorderedBulkOp();

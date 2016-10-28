@@ -1,13 +1,15 @@
 'use strict';
-
+const debug = require('debug')('seattle911:config.db');
 const mongoose = require('mongoose');
 const moment = require('moment');
 const _ = require('lodash');
-
 const config = require('./config');
 const IncidentPoint = require('./app/model/incident_point');
+const Neighbourhood = require('./app/model/neighbourhood');
 const superGroups = require('./app/controller/reformat_data');
 const getIncidentPoints = require('./app/controller/request_incidentPoints');
+const readdir = Promise.promisify(require('fs').readdir);
+const readfile = Promise.promisify(require('fs').readFile);
 
 mongoose.connect(config.db);
 
@@ -34,3 +36,27 @@ getIncidentPoints(startDate, endDate).then((response) => {
     mongoose.connection.close();
   });
 });
+
+
+readdir('geojson').then((files)=>{
+  files.forEach((file)=>{
+    readfile(`./geojson/${file}`).then((geoObj)=>{
+      let str = file.slice(0, -8);
+      neighbourhoodGeo(geoObj).then((geo)=>{
+        let addAreaName = _.merge(JSON.parse(geo), {properties: {area: str }});
+        let NeighbourhoodArea = new Neighbourhood(addAreaName);
+        NeighbourhoodArea.save();
+      });
+    });
+  });//end of forEach
+})
+.catch((err)=>{
+  debug(err);
+  console.error(err);
+});//end of readdir
+
+let neighbourhoodGeo = module.exports = (geoObj)=>{
+  return new Promise((resolve, reject)=>{
+    resolve(geoObj.toString());
+  });
+};

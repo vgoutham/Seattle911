@@ -1,8 +1,6 @@
 'use strict';
 const mongoose = require('mongoose');
 const debug = require('debug')('seattle911:neighbourhood');
-const Promise = require('bluebird');
-mongoose.Promise = Promise;
 
 let NeighbourhoodSchema = mongoose.Schema({
   properties: {

@@ -27,7 +27,7 @@ setInterval(() => {
   //Get last 24 hrs of incidents points from Socrata API
   getIncidentPoints(startDate, endDate).then((response) => {
     //then add _id and super groups to each incident
-    superGroupedData = IncidentPointCtr.addSuperGroup(response.data, supergroupProp);
+    superGroupedData = IncidentPointCtr.addSuperGroup(response.data);
 
   //Bulk update database with new incidents
     let bulk = IncidentPoint.collection.initializeUnorderedBulkOp();

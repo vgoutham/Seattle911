@@ -2,7 +2,7 @@
 const IncidentPoint = require('../model/incident_point');
 const debug = require('debug')('seattle911:incident_points_ctrl');
 const _= require('lodash');
-
+const supergroupProp = require('./reformat_data');
 
 //upsertingng data
 module.exports.storeIncidentPoints = (arr)=>{
@@ -17,7 +17,7 @@ module.exports.storeIncidentPoints = (arr)=>{
 
 
 //adding event_super_group
-module.exports.addSuperGroup = (res , supergroupProp)=>{
+module.exports.addSuperGroup = (res)=>{
   debug('addSuperGroup');
     let incidents = _.map(res.features, function(incident) {
       return _.merge(incident,

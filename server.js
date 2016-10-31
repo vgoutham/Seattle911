@@ -10,10 +10,10 @@ const moment = require('moment');
 const _ = require('lodash');
 const config = require('./config');
 const IncidentPoint = require('./app/model/incident_point');
-
 const getIncidentPoints = require('./app/controller/request_incidentPoints').getSocrataData;
 const IncidentPointCtr = require('./app/controller/incident_points_ctrl');
 require('./app/routes.js')(app);
+
 mongoose.connect(config.db);
 
 //Update database with new data every hour
@@ -22,15 +22,15 @@ const updateInterval = 1000 * 60 * 60;  //1 hour in milliseconds
 setInterval(() => {
   const startDate = moment().subtract(1, 'days').format().slice(0, -6); //24 hours prior to current datetime
   const endDate = moment().format().slice(0, -6); //current datetime
-  let superGroupedData;
+
   //Get last 24 hrs of incidents points from Socrata API
   getIncidentPoints(startDate, endDate).then((response) => {
     //then add _id and super groups to each incident
-    superGroupedData = IncidentPointCtr.addSuperGroup(response.data);
+    let incidentPoints = IncidentPointCtr.addSuperGroup(response.data);
 
-  //Bulk update database with new incidents
+    //Bulk update database with new incidents
     let bulk = IncidentPoint.collection.initializeUnorderedBulkOp();
-    superGroupedData.forEach(incident => {
+    incidentPoints.forEach((incident) => {
       bulk.find({_id: incident._id}).upsert().updateOne(incident);
     });
     bulk.execute((err, res) => {

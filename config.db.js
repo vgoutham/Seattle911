@@ -25,7 +25,6 @@ const endDate = moment().format().slice(0, -6); //current datetime
 getIncidentPoints.getSocrataData(startDate, endDate).then((response) => {
   //then add _id and super groups to each incident
   const incidents = IncidentPointCtr.addSuperGroup(response.data);
-
   //Insert database with incidents
   IncidentPoint.collection.insert(incidents, (err, res) => {
     if(err) throw err;

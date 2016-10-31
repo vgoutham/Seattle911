@@ -4,6 +4,7 @@ const debug = require('debug')('seattle911:incident_points_ctrl');
 const _ = require('lodash');
 const superGroups = require('./reformat_data');
 
+
 //upsertingng data
 module.exports.storeIncidentPoints = (arr) => {
   debug('storeIncidentPoints');
@@ -16,6 +17,7 @@ module.exports.storeIncidentPoints = (arr) => {
 };
 
 //adding event_super_group
+
 module.exports.addSuperGroup = (res) => {
   debug('addSuperGroup');
   let incidents = _.map(res.features, function(incident) {

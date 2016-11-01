@@ -1,7 +1,6 @@
 'use strict';
 const debug = require('debug')('seattle911:request_incidentPoints');
 const Promise = require('bluebird');
-const config = require('../../config.js');
 const request = Promise.promisify(require('request').get);
 const IncidentPoint = require('../model/incident_point');
 const NeighbourhoodGeo = require('../model/neighbourhood');

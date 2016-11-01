@@ -8,6 +8,8 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const moment = require('moment');
 const _ = require('lodash');
+
+const PORT = process.env.PORT || 3000;
 const config = require('./config');
 const IncidentPoint = require('./app/model/incident_point');
 const getIncidentPoints = require('./app/controller/request_incidentPoints').getSocrataData;
@@ -44,4 +46,4 @@ app.use(morgan('combined')); //'combined' outputs the Apache style LOGs
 app.use(cors({'Accept-Encoding': ['gzip']}));
 app.use(bodyParser.json());
 
-app.listen(config.port, () => {console.log(`Server is running on port: ${config.port}`);});
+app.listen(PORT, () => {console.log(`Server is running on port: ${PORT}`);});

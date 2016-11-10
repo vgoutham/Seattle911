@@ -7,7 +7,6 @@ const _ = require('lodash');
 const config = require('./config');
 const IncidentPoint = require('./app/model/incident_point');
 const Neighbourhood = require('./app/model/neighbourhood');
-const superGroups = require('./app/controller/reformat_data');
 const getIncidentPoints = require('./app/controller/request_incidentPoints');
 const IncidentPointCtr = require('./app/controller/incident_points_ctrl');
 const readdir = Promise.promisify(require('fs').readdir);
@@ -29,7 +28,7 @@ getIncidentPoints.getSocrataData(startDate, endDate).then((response) => {
   IncidentPoint.collection.insert(incidents, (err, res) => {
     if(err) throw err;
     console.log(`${res.insertedCount} incidents added to database!`);
-    mongoose.connection.close();
+    mongoose.disconnect();
   });
 });
 

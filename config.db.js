@@ -23,6 +23,7 @@ const endDate = moment().format().slice(0, -6); //current datetime
 //Get last month of incidents points from Socrata API
 getIncidentPoints.getSocrataData(startDate, endDate).then((response) => {
   //then add _id and super groups to each incident
+  debug(response.data.features.length);
   const incidents = IncidentPointCtr.addSuperGroup(response.data);
   //Insert database with incidents
   IncidentPoint.collection.insert(incidents, (err, res) => {

@@ -26,5 +26,5 @@ module.exports.addSuperGroup = (res) => {
         properties: {event_super_group: superGroups[incident.properties.event_clearance_group]}
       });
     });
-  return incidents;
+    return incidents;
 };

@@ -26,12 +26,5 @@ module.exports.addSuperGroup = (res) => {
         properties: {event_super_group: superGroups[incident.properties.event_clearance_group]}
       });
     });
-  // checking for undefined/null and throws an error
-  let checked = incidents.map((incident) => {
-      if(incident.properties.event_super_group === undefined || incident.properties.event_super_group === null){
-        throw new Error('event_super_group is undefined and not acceptable!');
-      }
-      return incident;
-    });
-    return checked;
+    return incidents;
 };
